@@ -7,6 +7,7 @@ from typing import Optional
 from importlib_metadata import entry_points
 
 from dialog.llm import get_llm_class
+from dialog.v2.chains import chain_with_history
 from dialog.llm.memory import get_messages
 from dialog.models import Chat as ChatEntity
 from dialog.schemas import ChatModel, SessionModel
@@ -27,6 +28,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from dialog.models.helpers import create_session as db_create_session
 from fastapi.staticfiles import StaticFiles
+
+from langserve import add_routes
 
 logging.basicConfig(
     level=LOGGING_LEVEL,
@@ -116,6 +119,9 @@ async def get_chat_content(chat_id):
 
     messages = get_messages(chat_id)
     return {"message": messages}
+
+# Chains served throuth Langserve 
+add_routes(app, chain_with_history, path="/v2/chat")
 
 @app.post("/session")
 async def create_session(session: SessionModel | None = None):
