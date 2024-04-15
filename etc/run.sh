@@ -3,7 +3,8 @@
 alembic upgrade head
 [[ -z "${DIALOG_LOADCSV_CLEARDB}" ]] || CLEARDB_COMMAND=--cleardb
 [[ -z "${DIALOG_LOADCSV_EMBED_COLUMNS}" ]] || EMBED_COLUMNS="--embed-columns ${DIALOG_LOADCSV_EMBED_COLUMNS}"
-python load_csv.py --path ${DIALOG_DATA_PATH} ${CLEARDB_COMMAND} ${EMBED_COLUMNS}
+# python load_csv.py --path ${DIALOG_DATA_PATH} ${CLEARDB_COMMAND} ${EMBED_COLUMNS}
+python dialog/v2/load_embeddings.py --path ${DIALOG_DATA_PATH} ${CLEARDB_COMMAND} ${EMBED_COLUMNS}
 
 /app/etc/install-plugins.sh
 
