@@ -25,7 +25,7 @@ many use cases that do not process too many documents or clients. Not all tasks 
 - [x] Add example dataset helpers for download
 - [ ] use embedding id (useful to add or delete them by id in [pgvector](https://python.langchain.com/docs/integrations/vectorstores/pgvector/))
 - [x] Add dataset (csv) loader and embedd into the vectordb
-- [ ] Add retriever with pgvector
+- [x] Add retriever with pgvector
 - [ ] Add use case or branch using in-memory vectordb/retriever and also in-memory chat history
 - [ ] Add basic unit tests
 - [ ] Add support to evaluate LLM answers (e.g [deepeval](https://github.com/confident-ai/deepeval) or [langsmith](https://docs.smith.langchain.com/evaluation) or [mlflow](https://mlflow.org/docs/latest/llms/llm-evaluate/index.html) evals, probably go for langsmith). Better to be some easy way of running them, and it'd good to add a workflow to allow eval in PRs.
