@@ -8,7 +8,7 @@ In this Right now, this fork considers:
 We don't have a full documentation yet, but you will find the basic instructions to run this project in the [Get Started](#get-started) section below.
 
 <blockquote style="background-color: #ffffcc; border-left: 10px solid #ffeb3b; padding: 15px;">
-  <p><strong>Note:</strong> ❗ ImportantThis fork applies many breaking changes with the upstream original project. The main breaking changes is that we expose the application directly with langserve and delegates all processing to chains (or combination of chains)</p>
+  <p><strong>Note:</strong> ❗ Important: this fork applies many breaking changes with the upstream original project. The main breaking changes is that we expose the application directly with langserve and delegates all processing to chains (or combination of chains)</p>
 </blockquote>
 
 ## Get Started
