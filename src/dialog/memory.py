@@ -1,5 +1,5 @@
 from typing import List, Tuple
-from dialog.settings import settings
+from dialog.settings import memory_settings
 from langchain.memory import PostgresChatMessageHistory
 
 
@@ -15,5 +15,5 @@ def format_chat_history(chat_history: List[Tuple]) -> str:
 
 def get_message_history(session_id: str):
     return PostgresChatMessageHistory(
-        session_id=session_id, connection_string=str(settings.database_url)
+        session_id=session_id, connection_string=str(memory_settings.connection)
     )

@@ -14,7 +14,7 @@ from langchain_core.runnables.history import RunnableWithMessageHistory
 
 from dialog.settings import chain_settings
 from dialog.memory import get_message_history, format_chat_history
-from dialog.retriever import get_retriever, combine_documents
+from dialog.vectorstore import get_retriever, combine_documents
 
 
 # Prompts

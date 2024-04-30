@@ -1,11 +1,11 @@
 import csv
 import logging
-logging.basicConfig(level=settings.logging_level.upper())
 
 from langchain_community.document_loaders.csv_loader import CSVLoader
 
 from dialog.settings import settings, vectordb_settings
 from dialog.vectorstore import get_vectorstore
+logging.basicConfig(level=settings.logging_level.upper())
 
 EMBEDDING_COLUMNS = ["Document"]
 

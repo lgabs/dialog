@@ -1,7 +1,7 @@
 #!/bin/bash
-echo "Current directory: $(pwd)"
-echo "Listing the current directory contents:"
-ls -l
+# echo "Current directory: $(pwd)"
+# echo "Listing the current directory contents:"
+# ls -l
 
 echo "PYTHONPATH: $PYTHONPATH"
 
