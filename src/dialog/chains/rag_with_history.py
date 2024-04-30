@@ -56,15 +56,15 @@ conversational_qa_chain = (
 
 
 class InputChat(TypedDict):
-    """Input for the chat endpoint."""
+    """Question for the chat endpoint."""
 
-    human_input: str
-    """Human input"""
+    question: str
+    """Human question."""
 
 
 rag_with_history_chain = RunnableWithMessageHistory(
     conversational_qa_chain,
     get_message_history,
-    input_messages_key="human_input",
-    history_messages_key="history",
+    input_messages_key="question",
+    history_messages_key="chat_history",
 ).with_types(input_type=InputChat)

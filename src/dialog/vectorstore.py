@@ -6,7 +6,7 @@ from langchain_postgres import PGVector
 from dialog.settings import vectordb_settings
 
 DEFAULT_DOCUMENT_PROMPT = PromptTemplate.from_template(template="{page_content}")
-CONNECTION = str(vectordb_settings.connection)
+CONNECTION = str(vectordb_settings.vectordb_connection)
 COLLECTION_NAME = vectordb_settings.collection_name
 
 
