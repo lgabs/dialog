@@ -1,19 +1,9 @@
 #!/bin/bash
+# echo "Current directory: $(pwd)"
+# echo "Listing the current directory contents:"
+# ls -l
 
-alembic upgrade head
-[[ -z "${DIALOG_LOADCSV_CLEARDB}" ]] || CLEARDB_COMMAND=--cleardb
-[[ -z "${DIALOG_LOADCSV_EMBED_COLUMNS}" ]] || EMBED_COLUMNS="--embed-columns ${DIALOG_LOADCSV_EMBED_COLUMNS}"
-python load_csv.py --path ${DIALOG_DATA_PATH} ${CLEARDB_COMMAND} ${EMBED_COLUMNS}
+echo "PYTHONPATH: $PYTHONPATH"
 
-/app/etc/install-plugins.sh
-
-if  [ -n "${TEST}" ]; then
-    python -m unittest
-    exit 0
-fi
-
-if [ -n "${DEBUG}" ]; then
-    exec uvicorn main:app --host 0.0.0.0 --port ${PORT} --reload
-else
-    exec uvicorn main:app --host 0.0.0.0 --port ${PORT}
-fi
+python dialog/make_embeddings.py
+uvicorn dialog.app.server:app --host 0.0.0.0 --port 8080 --reload

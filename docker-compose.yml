@@ -1,39 +1,31 @@
-version: '3.3'
 services:
   db:
-    image: pgvector/pgvector:pg15
+    image: pgvector/pgvector:pg16
     restart: always
     ports:
       - '5432:5432'
     environment:
-      POSTGRES_USER: talkdai
-      POSTGRES_PASSWORD: talkdai
-      POSTGRES_DB: talkdai
+      POSTGRES_USER: dialog
+      POSTGRES_PASSWORD: dialog
+      POSTGRES_DB: dialog
     volumes:
        - ./data/db:/var/lib/postgresql/data
-       - ./etc/db-ext-vector.sql:/docker-entrypoint-initdb.d/db-ext-vector.sql
     healthcheck:
-      test: ["CMD", "pg_isready", "-d", "talkdai", "-U", "talkdai"]
+      test: ["CMD", "pg_isready", "-d", "dialog", "-U", "dialog"]
       interval: 10s
       timeout: 5s
       retries: 5
-  dialog:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    stdin_open: true
-    tty: true
-    volumes:
-      - ./:/app
-      - ./.empty:/app/data/db
-      - ./static:/app/static
+
+  api:
+    build: .
     ports:
-      - '8000:8000'
+      - '8080:8080'
     depends_on:
       db:
         condition: service_healthy
-    environment:
-      - DATABASE_URL=postgresql://talkdai:talkdai@db:5432/talkdai
-      - STATIC_FILE_LOCATION=/app/static
     env_file:
       - .env
+    volumes:
+      - ./src:/app
+      - ./data:/app/data
+      - ./etc:/app/etc

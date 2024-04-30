@@ -1,30 +1,22 @@
 FROM python:3.11-slim
-LABEL org.opencontainers.image.source https://github.com/talkdai/dialog
-LABEL org.opencontainers.image.licenses MIT
 
-ENV PIP_DEFAULT_TIMEOUT=100
-ENV PIP_DISABLE_PIP_VERSION_CHECK=on
-ENV PIP_NO_CACHE_DIR=on
-ENV PYTHONFAULTHANDLER=1
-ENV PYTHONHASHSEED=random
-ENV PYTHONUNBUFFERED=1
+RUN pip install poetry==1.6.1
+
+RUN poetry config virtualenvs.create false
 
 WORKDIR /app
 
-COPY poetry.lock pyproject.toml README.md /app/
-COPY pytest.ini /app/src/
+COPY ./pyproject.toml ./README.md ./poetry.lock .
 
-RUN pip install -U pip poetry && \
-  poetry config virtualenvs.create false && \
-  poetry install --no-dev
+RUN poetry install --no-interaction --no-ansi --no-root
 
-COPY /static /app/static
+COPY ./src .
 COPY /etc /app/etc
-COPY /src /app/src
-
 RUN chmod +x /app/etc/run.sh
-RUN chmod +x /app/etc/run-tests.sh
 
-WORKDIR /app/src
+EXPOSE 8080
 
-CMD [ "/app/etc/run.sh" ]
+ENV PYTHONPATH="/app:$PYTHONPATH"
+
+CMD /app/etc/run.sh
+

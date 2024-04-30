@@ -1,85 +1,41 @@
-# talkd/dialog
+# Dialog
+This fork of Dialog is a Q&amp;A Application with LLMs, using Langchain and LangServe. It focus specifically on the problem of deploying a Q&A application that uses RAG for answers, i.e., a knowledge base to augment the LLM's context. This can be achieved using langserve to serve any langchain's chain, which can include chat history and usually uses a vector store to store embeddings from the knowledge base and retriever to search for them. The idea of this project is to present a default configuraion for a production-ready chain, but allow customization in any component of the chain, including combination of chains.
 
-Humanized Conversation API (using LLM)
+In this Right now, this fork considers:
+- for chat history: [Postgres](https://python.langchain.com/docs/integrations/memory/postgres_chat_message_history/)
+- for vector store and retriever: [PGVector](https://python.langchain.com/docs/integrations/vectorstores/pgvector/)
 
-> conversations in a human way without exposing that it's a LLM answering
+We don't have a full documentation yet, but you will find the basic instructions to run this project in the [Get Started](#get-started) section below.
 
-For more information, check our [documentation](https://dialog.talkd.ai)!
+<blockquote style="background-color: #ffffcc; border-left: 10px solid #ffeb3b; padding: 15px;">
+  <p><strong>Note:</strong> ❗ ImportantThis fork applies many breaking changes with the upstream original project. The main breaking changes is that we expose the application directly with langserve and delegates all processing to chains (or combination of chains)</p>
+</blockquote>
 
-## Run the project
+## Get Started
 
-We assume you are familiar with [Docker](https://www.docker.com/). Follow the [Quick Start](##quick-start) for setup and then run
+## TODOs/Ideas
 
-```bash
-docker-compose up
-```
-it will start two services: 
-- `db`: where the PostgresSQL database runs to support chat history and document retrieval for [RAG](https://en.wikipedia.org/wiki/Prompt_engineering#Retrieval-augmented_generation);
-- `dialog`: the service with the api.
+I've already done some tasks, but I really think that the basic project structure should be with 
+in-memory vectordb (and chat history too), since it's much easier to get started with and probably solves
+many use cases that do not process too many documents or clients. Not all tasks should be done in sequence.
 
-## Quick Start
+- [x] Update this readme with project idea and main components
+- [x] Add docker compose with services for db (postgrest with pgvector) and api
+- [x] Add memory (langchain_postgres package)
+- [x] Add example dataset helpers for download
+- [ ] use embedding id (useful to add or delete them by id in [pgvector](https://python.langchain.com/docs/integrations/vectorstores/pgvector/))
+- [x] Add dataset (csv) loader and embedd into the vectordb
+- [ ] Add retriever with pgvector
+- [ ] Add use case or branch using in-memory vectordb/retriever and also in-memory chat history
+- [ ] Add basic unit tests
+- [ ] Add support to evaluate LLM answers (e.g [deepeval](https://github.com/confident-ai/deepeval) or [langsmith](https://docs.smith.langchain.com/evaluation) or [mlflow](https://mlflow.org/docs/latest/llms/llm-evaluate/index.html) evals, probably go for langsmith). Better to be some easy way of running them, and it'd good to add a workflow to allow eval in PRs.
 
-To use this project, you need to have a `.csv` file with the knowledge base and a `.toml` file with your prompt configuration.
+# Example files
 
-We recommend that you create a folder inside this project called `data` and put CSVs and TOMLs files over there.
+The `examples` folder contains some example files to run the application locally. To get an example of a Q&A dataset, download this [Question-Answer Dataset](https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download&select=S08_question_answer_pairs.txt) into `examples/qa_example.csv` path and run `python examples/make_qa_example.py` to build a simple knowledge base with question and answer together (the result will be embedded together).
 
-### `.csv` knowledge base
-
-The knowledge base has needed columns:
-
-- category
-- subcategory: used to customize the prompt for specific questions
-- question
-- content: used to generate the embedding
-
-**Example:**
-
-```csv
-category,subcategory,question,content
-faq,promotions,loyalty-program,"The company XYZ has a loyalty program when you refer new customers you get a discount on your next purchase, ..."
-```
-
-When the `dialog` service starts, it loads the knowledge base into the database, so make sure the database is up and paths are correct (see [environment variables](##environment-variables) section). Alternatively, inside `src` folder, run `make load-data path="<path-to-your-knowledge-base>.csv"`. 
-
-See [our documentation](https://dialog.talkd.ai/settings#csv-knowledge-base) for more options about the the knowledge base, including embedding more coluns together.
-
-
-### `.toml` prompt configuration
-
-The `[prompt.header]`, `[prompt.suggested]`, and `[fallback.prompt]` fields are mandatory fields used for processing the conversation and connecting to the LLM.
-
-The `[prompt.fallback]` field is used when the LLM does not find a compatible embedding in the database; that is, the `[prompt.header]` **is ignored** and the `[prompt.fallback]` is used. Without it, there could be hallucinations about possible answers to questions outside the scope of the embeddings.
-
-> In `[prompt.fallback]` the response will be processed by LLM. If you need to return a default message when there is no recommended question in the knowledge base, use the `[prompt.fallback_not_found_relevant_contents]` configuration in the `.toml` *(project configuration)*.
-
-It is also possible to add information to the prompt for subcategories and choose some optional llm parameters like temperature (defaults to 0.2) or model_name, see below for an example of a complete configuration:
-
-```toml
-[model]
-temperature = 0.2
-model_name = "gpt-3.5-turbo"
-
-[prompt]
-header = """You are a service operator called Avelino from XYZ, you are an expert in providing
-qualified service to high-end customers. Be brief in your answers, without being long-winded
-and objective in your responses. Never say that you are a model (AI), always answer as Avelino.
-Be polite and friendly!"""
-
-suggested = "Here is some possible content 
-that could help the user in a better way."
-
-fallback = "I'm sorry, I couldn't find a relevant answer for your question."
-
-fallback_not_found_relevant_contents = "I'm sorry, I couldn't find a relevant answer for your question."
-
-[prompt.subcategory.loyalty-program]
-
-header = """The client is interested in the loyalty program, and needs to be responded to in a
-salesy way; the loyalty program is our growth strategy."""
-```
-
-### Environment Variables
-
-Look at the [`.env.sample`](.env.sample) file to see the environment variables needed to run the project. While the `.csv` contains only the knowledge base, the `.toml` contains some llm parameters and prompts, and finally the `.env` contains the OpenAI token, paths and some project parameters. We recommend you to [read our documentation](https://dialog.talkd.ai/settings#environment-variables) that discusses configuration.
-
-
+# References
+- [LangChain Template - RAG Conversation](https://github.com/langchain-ai/langchain/tree/master/templates/rag-conversation)
+- [Langchain Template - Chat with Persistence](https://github.com/langchain-ai/langserve/blob/main/examples/chat_with_persistence/server.py)
+- [Langchain Conversation with Retrieval Chain](https://github.com/langchain-ai/langserve/blob/main/examples/conversational_retrieval_chain/server.py)
+- [langchain-cli](https://github.com/langchain-ai/langchain/blob/master/libs/cli/DOCS.md)

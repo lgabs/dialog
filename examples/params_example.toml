@@ -1,0 +1,18 @@
+[prompts]
+standalone_question_template = """
+Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question, in its original language.
+Chat History:
+{chat_history}
+Follow Up Input: {question}
+Standalone question:
+"""
+final_answer_template = """Answer the question based only on the following context:
+{context}
+
+Question: {question}
+"""
+
+[model_params]
+# Controls hyperparameters of the main llm model used for Q&A with RAG
+temperature = 0
+model_name = "gpt-3.5-turbo"
