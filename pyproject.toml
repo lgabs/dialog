@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "dialog"
+version = "0.1.0"
+description = "Conversational Chatbot with RAG."
+authors = [
+    "Luan Fernadnes <luangabriel70@gmail.com>",
+]
+readme = "README.md"
+packages = [{include = "dialog", from = "src"}]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+langchain = "^0.1"
+openai = "<2"
+tiktoken = ">=0.5.1"
+black = "^24.2.0"
+langserve = "^0.0.51"
+langsmith = "^0.1.26"
+fastapi = "^0.110.0"
+uvicorn = {extras = ["standard"], version = "^0.29.0"}
+sse-starlette = "^2.0.0"
+pydantic-settings = "^2.2.1"
+langchain-openai = "^0.1.0"
+pgvector = "^0.2.5"
+langchain-postgres = "^0.0.2"
+psycopg-binary = "^3.1.18"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.6.2"
+pandas = "^2.2.1"
+
+[tool.black]
+line-length = 88
+
+[build-system]
+requires = [
+    "poetry-core",
+]
+build-backend = "poetry.core.masonry.api"
