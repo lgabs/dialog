@@ -13,7 +13,7 @@ We don't have a full documentation yet, but you will find the basic instructions
 
 ## Get Started
 
-To run it initially, download some example files to use as knowledge base. The `examples` folder contains some example files to run the application locally. To get an example of a Q&A dataset, download this [Question-Answer Dataset](https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download&select=S08_question_answer_pairs.txt) into `examples/qa_example.csv` path and run `python examples/make_qa_example.py` to build a simple knowledge base with question and answer together (the result will be embedded together).
+To run it initially, download some example files to use as knowledge base. The `examples` folder contains some example files to run the application locally. To get an example of a Q&A dataset, download this [Question-Answer Dataset](https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download&select=S08_question_answer_pairs.txt) into `examples/qa_example.csv` path and run `python examples/make_qa_example.py` to build a simple knowledge base with question and answer together (the result will be embedded together). Notice that this file does a simple processing and saves the csv to the `/data` folder. This is the default folder for the knowledge base.
 
 Then, run:
 ```
