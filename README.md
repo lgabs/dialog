@@ -13,6 +13,18 @@ We don't have a full documentation yet, but you will find the basic instructions
 
 ## Get Started
 
+To run it initially, download some example files to use as knowledge base. The `examples` folder contains some example files to run the application locally. To get an example of a Q&A dataset, download this [Question-Answer Dataset](https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download&select=S08_question_answer_pairs.txt) into `examples/qa_example.csv` path and run `python examples/make_qa_example.py` to build a simple knowledge base with question and answer together (the result will be embedded together).
+
+Then, run:
+```
+docker compose up
+```
+
+and you'll see two services running:
+- `db` - the service for the postgres container
+- `api` - the service to expose dialog api using langserve
+
+
 ## TODOs/Ideas
 
 I've already done some tasks, but I really think that the basic project structure should be with 
@@ -29,10 +41,6 @@ many use cases that do not process too many documents or clients. Not all tasks 
 - [ ] Add use case or branch using in-memory vectordb/retriever and also in-memory chat history
 - [ ] Add basic unit tests
 - [ ] Add support to evaluate LLM answers (e.g [deepeval](https://github.com/confident-ai/deepeval) or [langsmith](https://docs.smith.langchain.com/evaluation) or [mlflow](https://mlflow.org/docs/latest/llms/llm-evaluate/index.html) evals, probably go for langsmith). Better to be some easy way of running them, and it'd good to add a workflow to allow eval in PRs.
-
-# Example files
-
-The `examples` folder contains some example files to run the application locally. To get an example of a Q&A dataset, download this [Question-Answer Dataset](https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download&select=S08_question_answer_pairs.txt) into `examples/qa_example.csv` path and run `python examples/make_qa_example.py` to build a simple knowledge base with question and answer together (the result will be embedded together).
 
 # References
 - [LangChain Template - RAG Conversation](https://github.com/langchain-ai/langchain/tree/master/templates/rag-conversation)
