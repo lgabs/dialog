@@ -13,7 +13,7 @@ Right now, this fork considers:
 We don't have a full documentation yet, but you will find the basic instructions to run this project in the [Get Started](#get-started) section below. Feel free to check the project issues, add your ideas, and also the [project's kanban](https://github.com/users/lgabs/projects/2).
 
 <blockquote style="background-color: #ffffcc; border-left: 10px solid #ffeb3b; padding: 15px;">
-  <p><strong>Note:</strong> ‼️ Important ‼️: this fork applies many breaking changes with the upstream original project. The main breaking changes is that we expose the application directly with langserve and delegates all processing to chains (or combination of chains). I hope that the ideas from this fork can foster constributions for the original repo 🙏. Also, this fork is not yet stable and can suffer breaking changes itself, since we're experimenting many things. </p>
+  <p><strong>Note:</strong> ‼️ Important ‼️: this fork applies many breaking changes with the upstream original project, but which I see are beneficial for the project catch-up with langchain's framework. The main breaking changes is that we expose the application directly with langserve and delegates all processing to chains (or combination of chains). I hope that the ideas from this fork can foster constributions for the original repo 🙏. Also, this fork is not yet stable and can suffer breaking changes itself, since we're experimenting many things. </p>
 </blockquote>
 
 ## How the solution works
