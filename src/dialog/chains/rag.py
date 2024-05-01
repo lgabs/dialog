@@ -36,8 +36,12 @@ class InputChat(TypedDict):
 
 
 rag_chain = (
-    {"context": retriever | combine_documents, "question": RunnablePassthrough()}
-    | ANSWER_PROMPT
-    | llm
-    | StrOutputParser()
-).with_types(input_type=InputChat)
+    (
+        {"context": retriever | combine_documents, "question": RunnablePassthrough()}
+        | ANSWER_PROMPT
+        | llm
+        | StrOutputParser()
+    )
+    .with_types(input_type=InputChat)
+    .with_config({"run_name": "RagChain"})
+)
