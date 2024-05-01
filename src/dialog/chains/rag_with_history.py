@@ -72,7 +72,7 @@ _query_with_context = RunnableParallel(
 conversational_qa_chain = (
     _standalone_question.with_config({"run_name": "StandaloneQuestion"})
     | _query_with_context.with_config({"run_name": "QuestionWithContext"})
-    | FINAL_ANSWER_PROMPT.with_config({"run_name": "FINAL_ANSWER_PROMPT"})
+    | FINAL_ANSWER_PROMPT.with_config({"run_name": "FinalAnswerPrompt"})
     | llm
     | StrOutputParser()
 )
