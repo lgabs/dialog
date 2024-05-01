@@ -3,7 +3,7 @@ name = "dialog"
 version = "0.1.0"
 description = "Conversational Chatbot with RAG."
 authors = [
-    "Luan Fernadnes <luangabriel70@gmail.com>",
+    "Luan Fernandes <luangabriel70@gmail.com>",
 ]
 readme = "README.md"
 packages = [{include = "dialog", from = "src"}]
