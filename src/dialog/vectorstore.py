@@ -17,12 +17,14 @@ def combine_documents(
     doc_strings = [format_document(doc, document_prompt) for doc in docs]
     return document_separator.join(doc_strings)
 
+
 def get_vectorstore():
     return PGVector(
-            collection_name=COLLECTION_NAME,
-            connection=CONNECTION,
-            embeddings=OpenAIEmbeddings(),
-        )
-    
+        collection_name=COLLECTION_NAME,
+        connection=CONNECTION,
+        embeddings=OpenAIEmbeddings(),
+    )
+
+
 def get_retriever():
     return get_vectorstore().as_retriever()

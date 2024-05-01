@@ -5,7 +5,9 @@ from langchain_community.chat_message_histories import PostgresChatMessageHistor
 import uuid
 
 
-def format_chat_history(chat_history: List[Union[HumanMessage, AIMessage, SystemMessage]]) -> str:
+def format_chat_history(
+    chat_history: List[Union[HumanMessage, AIMessage, SystemMessage]]
+) -> str:
     """Format chat history into a string."""
     buffer = ""
     for message in chat_history:
