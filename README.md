@@ -1,7 +1,7 @@
 # Dialog
 This fork of Dialog is a Q&amp;A Application with LLMs, using Langchain and LangServe. It focus specifically on the problem of deploying a Q&A application that uses RAG for answers, i.e., a knowledge base to augment the LLM's context. This can be achieved using langserve to serve any langchain's chain, which can include chat history and usually uses a vector store to store embeddings from the knowledge base and retriever to search for them. The idea of this project is to present a default configuraion for a production-ready chain, but allow customization in any component of the chain, including combination of chains.
 
-In this Right now, this fork considers:
+Right now, this fork considers:
 - for chat history: [Postgres](https://python.langchain.com/docs/integrations/memory/postgres_chat_message_history/)
 - for vector store and retriever: [PGVector](https://python.langchain.com/docs/integrations/vectorstores/pgvector/)
 
