@@ -9,17 +9,31 @@ Right now, this fork considers:
 - for chat history: [Postgres](https://python.langchain.com/docs/integrations/memory/postgres_chat_message_history/)
 - for vector store and retriever: [PGVector](https://python.langchain.com/docs/integrations/vectorstores/pgvector/)
 
-We don't have a full documentation yet, but you will find the basic instructions to run this project in the [Get Started](#get-started) section below. Feel free to check the project issues, add your ideas, and also the [project's kanban](https://github.com/users/lgabs/projects/2).  
+We don't have a full documentation yet, but you will find the basic instructions to run this project in the [Get Started](#get-started) section below. Feel free to check the project issues, add your ideas, and also the [project's kanban](https://github.com/users/lgabs/projects/2).
 
 <blockquote style="background-color: #ffffcc; border-left: 10px solid #ffeb3b; padding: 15px;">
   <p><strong>Note:</strong> ❗ Important: this fork applies many breaking changes with the upstream original project. The main breaking changes is that we expose the application directly with langserve and delegates all processing to chains (or combination of chains)</p>
 </blockquote>
 
+## How the solution works
+
+If you are new to RAG tecnique for LLM applications like Q&A, check [langchain's documentation](https://python.langchain.com/docs/use_cases/question_answering/) on that. The solution basically follows the idea that LLMs can learn knowledge in two ways: 
+- via model weights (i.e., fine-tune the model on a training set)
+- via model inputs (i.e., insert the knowledge into an input message, via prompt)
+
+The latter is usually more suitable to make a more reliable model for factual recall, and serves as a "short-memory", easier to recall, while the fine-tuning are like a long-term memory, difficult to recall. Check this nice [OpenAI cookbook](https://github.com/openai/openai-cookbook/blob/main/examples/Question_answering_using_embeddings.ipynb) for a deeper understanding.
+
+Tipically, the architecture is like this:
+- **indexing**: store knowledge in a "searchable" way into some store (in-memory or persistent). This is usually done with embeddings-based search, i.e., representing text with vectors.
+- **RAG Chain**: build a chain that takes the user query (question) in runtime, searches for relevant data in the index, and include them in the prompt passed to the LLM.
+
+With the chain created (or combination of chains), you can easly expose them as REST APIs with Langserve, and also monitor chain calls with Langsmith. Both are parts of the Langchain's framework (more details [here](https://python.langchain.com/docs/get_started/introduction/#get-started)).
+
 ## Get Started
 
-To run it initially, download some example files to use as knowledge base. The `examples` folder contains some example files to run the application locally. To get an example of a Q&A dataset, download this [Question-Answer Dataset](https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download&select=S08_question_answer_pairs.txt) into `examples/qa_example.csv` path and run `python examples/make_qa_example.py` to build a simple knowledge base with question and answer together (the result will be embedded together). Notice that this file does a simple processing and saves the csv to the `/data` folder. This is the default folder for the knowledge base. The default column to be embedded is called `Document`, all remaining columns will be added as metadata do the embedded document.
+To run it initially, download this [Question-Answer Dataset](https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download&select=S08_question_answer_pairs.txt) into `examples/qa_example.csv` path and run `python examples/make_qa_example.py` to build a simple knowledge base with question and answer together (the result will be embedded together). Notice that this file does a simple preprocessing and saves the csv to the `/data` folder. This is the default folder for the knowledge base. The default column to be embedded is called `Document`, all remaining columns will be added as metadata do the embedded document.
 
-Then, run:
+Before starting the dockerized application, you'll need a `.env` for environment variables; use the [`.env.sample`](https://github.com/lgabs/dialog/blob/main/.env.sample) as an example. After that, run:
 ```
 docker compose up
 ```
