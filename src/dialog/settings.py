@@ -27,6 +27,7 @@ class VectordbSettings(BaseSettings):
     vectordb_connection: PostgresDsn
     collection_name: str
     knowledge_base_path: FilePath = Field(default="./data/knowledge_base.csv")
+    embedding_cols: str
 
 
 settings = Settings()

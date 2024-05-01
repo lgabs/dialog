@@ -1,12 +1,12 @@
 import csv
-import logging
+import re
 
 from langchain_community.document_loaders.csv_loader import CSVLoader
+from langchain_core.documents import Document
 
 from dialog.settings import vectordb_settings
 from dialog.vectorstore import get_vectorstore
-
-EMBEDDING_COLUMNS = ["Document"]
+from langchain_core.vectorstores import VectorStore
 
 
 def _get_csv_cols(path: str):
@@ -16,8 +16,9 @@ def _get_csv_cols(path: str):
 
 
 def make_embeddings(
-    path: str, embedding_columns=EMBEDDING_COLUMNS, metadata_columns=None
+    path: str, embedding_columns=None, metadata_columns=None
 ):
+    embedding_columns = embedding_columns or vectordb_settings.embedding_cols
     metadata_columns = metadata_columns or [
         col for col in _get_csv_cols(path) if col not in embedding_columns
     ]
@@ -26,8 +27,11 @@ def make_embeddings(
     )
     loader = CSVLoader(path, metadata_columns=metadata_columns)
     docs = loader.load()
+    print(f"Glimpse over the first doc: {docs[0].page_content[:100]}...")
 
-    vectordb = get_vectorstore()
+    vectordb: VectorStore = get_vectorstore()
+    vectordb.delete_collection()
+    vectordb.create_collection()
     vectordb.add_documents(docs)
     print(f"Added {len(docs)} documents to the store.")
 
