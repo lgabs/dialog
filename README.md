@@ -28,7 +28,7 @@ Tipically, the architecture is like this:
 - **indexing**: store knowledge in a "searchable" way into some store (in-memory or persistent). This is usually done with embeddings-based search, i.e., representing text with vectors.
 - **RAG Chain**: build a chain that takes the user query (question) in runtime, searches for relevant data in the index, and include them in the prompt passed to the LLM.
 
-With the chain created (or combination of chains), you can easly expose them as REST APIs with Langserve, and also monitor chain calls with Langsmith. Both are parts of the Langchain's framework (more details [here](https://python.langchain.com/docs/get_started/introduction/#get-started)).
+With the chain created (or combination of chains), you can easly expose them as REST APIs with Langserve, and also monitor chain calls with Langsmith (check [this quickstart](https://docs.smith.langchain.com/hub/quickstart) and see the `.env.sample`). Both are parts of the Langchain's framework (more details [here](https://python.langchain.com/docs/get_started/introduction/#get-started)).
 
 ## Get Started
 
