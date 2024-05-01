@@ -43,7 +43,9 @@ and you'll see two services running:
 - `db` - the service for the postgres container (the same database is used for memory and vector store)
 - `api` - the service to expose dialog api using langserve
 
-Now, chat with dialog using the playground (at http://0.0.0.0:8080/chat/playground/) or access the api documentation at http://0.0.0.0:8080/docs, which includes all endpoints automatically created by langserve in the Swagger UI.
+Now, chat with dialog using the playground (at http://0.0.0.0:8080/chat/playground/) or access the api documentation at http://0.0.0.0:8080/docs, which includes all endpoints automatically created by langserve in the Swagger UI. 
+
+The `src/dialog/app/server.py` defines the FastAPI API, and the langchain's `add_routes` exposes any chain under a specified `path`.By default, it exposes the `rag_with_history_chain`, which lives in `src/dialog/chains/rag_with_history`. All chains should be defined in the `src/dialog/chains` module, and you can serve as many as you want using add_routes with other paths.
 
 
 ## References
