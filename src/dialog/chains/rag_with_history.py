@@ -8,7 +8,12 @@ from langchain_core.prompts import (
     ChatPromptTemplate,
 )
 
-from langchain.schema.runnable import RunnableMap, RunnablePassthrough
+from langchain.schema.runnable import (
+    RunnableParallel,
+    RunnablePassthrough,
+    RunnableBranch,
+    RunnableLambda,
+)
 
 from langchain_core.runnables.history import RunnableWithMessageHistory
 
@@ -25,14 +30,26 @@ STANDALONE_QUESTION_PROMPT = PromptTemplate.from_template(STANDALONE_QUESTION_TE
 FINAL_ANSWER_TEMPLATE = prompts.get("final_answer_template")
 FINAL_ANSWER_PROMPT = ChatPromptTemplate.from_template(FINAL_ANSWER_TEMPLATE)
 
-_inputs = RunnableMap(
-    standalone_question=RunnablePassthrough.assign(
-        chat_history=lambda x: format_chat_history(x["chat_history"])
-    )
-    | STANDALONE_QUESTION_PROMPT
-    | ChatOpenAI(temperature=0)
-    | StrOutputParser(),
-)
+# Standalone Question
+
+_standalone_question = RunnableBranch(
+    # If input includes chat_history, we condense it with the follow-up question
+    (
+        RunnableLambda(lambda x: bool(x.get("chat_history"))).with_config(
+            run_name="HasChatHistoryCheck"
+        ),  # Condense follow-up question and chat into a standalone_question
+        RunnablePassthrough.assign(
+            chat_history=lambda x: format_chat_history(x["chat_history"])
+        ).with_config(run_name="ChatHistory")
+        | STANDALONE_QUESTION_PROMPT
+        | ChatOpenAI(temperature=0)
+        | StrOutputParser(),
+    ),
+    # Else, we have no chat history, so just pass through the question
+    RunnableLambda(itemgetter("question")).with_config(
+        run_name="QuestionWithoutHistory"
+    ),
+) | ({"question": RunnablePassthrough()})
 
 # LLM (for main task)
 MODEL_PARAMS = chain_settings.chain_params.get("model_params", {})
@@ -44,14 +61,20 @@ llm = ChatOpenAI(
 retriever = get_retriever()
 
 # Build the chain
-_context = {
-    "context": itemgetter("standalone_question") | retriever | combine_documents,
-    "question": lambda x: x["standalone_question"],
-}
+_query_with_context = RunnableParallel(
+    {
+        "context": itemgetter("question") | retriever | combine_documents,
+        "question": lambda x: x["question"],
+    }
+)
 
 
 conversational_qa_chain = (
-    _inputs | _context | FINAL_ANSWER_PROMPT | llm | StrOutputParser()
+    _standalone_question.with_config({"run_name": "StandaloneQuestion"})
+    | _query_with_context.with_config({"run_name": "QuestionWithContext"})
+    | FINAL_ANSWER_PROMPT.with_config({"run_name": "FINAL_ANSWER_PROMPT"})
+    | llm
+    | StrOutputParser()
 )
 
 
@@ -62,9 +85,13 @@ class InputChat(TypedDict):
     """Human question."""
 
 
-rag_with_history_chain = RunnableWithMessageHistory(
-    conversational_qa_chain,
-    get_message_history,
-    input_messages_key="question",
-    history_messages_key="chat_history",
-).with_types(input_type=InputChat)
+rag_with_history_chain = (
+    RunnableWithMessageHistory(
+        conversational_qa_chain,
+        get_message_history,
+        input_messages_key="question",
+        history_messages_key="chat_history",
+    )
+    .with_types(input_type=InputChat)
+    .with_config({"run_name": "RagChainWithHistory"})
+)
