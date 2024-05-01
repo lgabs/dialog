@@ -21,7 +21,7 @@ docker compose up
 ```
 
 and you'll see two services running:
-- `db` - the service for the postgres container
+- `db` - the service for the postgres container (the same database is used for memory and vector store)
 - `api` - the service to expose dialog api using langserve
 
 
