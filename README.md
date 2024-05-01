@@ -1,4 +1,5 @@
 # Dialog
+
 This fork of Dialog is a Q&amp;A Chatbot Application with LLMs, using Langchain and LangServe. It is [LCEL first](https://python.langchain.com/docs/expression_language/), i.e., it follows the LangChain Expression Language design. It focus specifically on the problem of deploying a Q&A application that uses RAG for answers, i.e., one or more knowledge bases to augment the LLM's context. This can be achieved using langserve to serve any langchain's chain, which can include chat history and usually uses a vector store to store embeddings from the knowledge base and retriever to search for them. 
 
 There are many ways of creating llm applications for a Q&A Chatbot, but not so trivial for beginners. The idea of this project is to present a default configuration for a production-ready chain, but allow customization in any component of the chain, including combination of chains.
@@ -12,7 +13,7 @@ Right now, this fork considers:
 We don't have a full documentation yet, but you will find the basic instructions to run this project in the [Get Started](#get-started) section below. Feel free to check the project issues, add your ideas, and also the [project's kanban](https://github.com/users/lgabs/projects/2).
 
 <blockquote style="background-color: #ffffcc; border-left: 10px solid #ffeb3b; padding: 15px;">
-  <p><strong>Note:</strong> ❗ Important: this fork applies many breaking changes with the upstream original project. The main breaking changes is that we expose the application directly with langserve and delegates all processing to chains (or combination of chains)</p>
+  <p><strong>Note:</strong> ‼️ Important ‼️: this fork applies many breaking changes with the upstream original project. The main breaking changes is that we expose the application directly with langserve and delegates all processing to chains (or combination of chains). I hope that the ideas from this fork can foster constributions for the original repo 🙏. Also, this fork is not yet stable and can suffer breaking changes itself, since we're experimenting many things. </p>
 </blockquote>
 
 ## How the solution works
