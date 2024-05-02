@@ -20,6 +20,7 @@ def get_vectorstore():
         collection_name=vectordb_settings.collection_name,
         connection=str(vectordb_settings.vectordb_connection),
         embeddings=OpenAIEmbeddings(),
+        create_extension=False
     )
 
 
