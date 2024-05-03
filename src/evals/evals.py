@@ -15,13 +15,6 @@ EVALS_PATH = os.environ["EVALS_PATH"]
 DATASET_NAME = os.environ["DATASET_NAME"]
 
 
-def read_openai_eval_examples(path: str) -> List[Dict]:
-    """Parses evaluation samples when they are OpenAI's format for evals."""
-    with open(path, "r") as jsonl_file:
-        jsonl_list = list(jsonl_file)
-    return [json.loads(jline) for jline in jsonl_list]
-
-
 if __name__ == "__main__":
     # Choose a chain (making some input/output change to match with private eval sample)
     chain = (
