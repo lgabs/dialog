@@ -27,7 +27,6 @@ if __name__ == "__main__":
     chain = (
         {"question": itemgetter("user_message")}
         | rag_chain
-        | {"text": itemgetter("output")}
     )
     # Setup the evaluation
     client = Client()
