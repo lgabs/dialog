@@ -15,9 +15,7 @@ def _get_csv_cols(path: str):
         return reader.fieldnames
 
 
-def make_embeddings(
-    path: str, embedding_columns=None, metadata_columns=None
-):
+def make_embeddings(path: str, embedding_columns=None, metadata_columns=None):
     embedding_columns = embedding_columns or vectordb_settings.embedding_cols
     metadata_columns = metadata_columns or [
         col for col in _get_csv_cols(path) if col not in embedding_columns
@@ -30,6 +28,7 @@ def make_embeddings(
     print(f"Glimpse over the first doc: {docs[0].page_content[:100]}...")
 
     vectordb: VectorStore = get_vectorstore()
+    print("Rebuilding the vector store with embeddings...")
     vectordb.delete_collection()
     vectordb.create_collection()
     vectordb.add_documents(docs)

@@ -7,6 +7,7 @@ from dialog.settings import vectordb_settings
 
 DEFAULT_DOCUMENT_PROMPT = PromptTemplate.from_template(template="{page_content}")
 
+
 def combine_documents(
     docs, document_prompt=DEFAULT_DOCUMENT_PROMPT, document_separator="\n\n"
 ):
@@ -20,7 +21,7 @@ def get_vectorstore():
         collection_name=vectordb_settings.collection_name,
         connection=str(vectordb_settings.vectordb_connection),
         embeddings=OpenAIEmbeddings(),
-        create_extension=False
+        create_extension=False,
     )
 
 

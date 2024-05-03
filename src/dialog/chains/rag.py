@@ -3,7 +3,6 @@ from operator import itemgetter
 from typing import TypedDict
 from langchain_openai import ChatOpenAI
 from langchain_core.output_parsers import StrOutputParser
-from langchain.prompts.prompt import PromptTemplate
 from langchain_core.prompts import (
     ChatPromptTemplate,
 )
@@ -39,7 +38,10 @@ class InputChat(TypedDict):
 
 rag_chain = (
     (
-        {"context": itemgetter("question") | retriever | combine_documents, "question": RunnablePassthrough()}
+        {
+            "context": itemgetter("question") | retriever | combine_documents,
+            "question": RunnablePassthrough(),
+        }
         | ANSWER_PROMPT
         | llm
         | StrOutputParser()
