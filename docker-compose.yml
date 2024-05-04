@@ -9,23 +9,34 @@ services:
       POSTGRES_PASSWORD: dialog
       POSTGRES_DB: dialog
     volumes:
-       - ./data/db:/var/lib/postgresql/data
+       - ./data/postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD", "pg_isready", "-d", "dialog", "-U", "dialog"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  api:
+  make-embeddings:
     build: .
-    ports:
-      - '8080:8080'
+    command: /app/src/scripts/make_embeddings.py
     depends_on:
       db:
         condition: service_healthy
     env_file:
       - .env
     volumes:
-      - ./src:/app
-      - ./data:/app/data
-      - ./etc:/app/etc
+      - ./src:/app/src
+      - ./examples:/data
+
+  dialog:
+    build: .
+    ports:
+      - '8080:8080'
+    depends_on:
+      make-embeddings:
+        condition: service_completed_successfully
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src
+      - ./examples:/data

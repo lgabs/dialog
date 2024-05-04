@@ -1,0 +1,13 @@
+name: Build Test
+run-name: Build Test
+
+on: [push]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build test
+      run: docker build . -t dialog 
