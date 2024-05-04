@@ -1,12 +1,10 @@
 name: Build Test
 run-name: Build Test
 
-on:
-  pull_request:
-    types: [opened, reopened]
+on: [push]
 
 jobs:
-  test:
+  build-test:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
