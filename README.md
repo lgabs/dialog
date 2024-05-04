@@ -43,7 +43,7 @@ docker compose up
 
 and you'll see two services running:
 - `db` - the service for the postgres container (the same database is used for memory and vector store)
-- `api` - the service to expose dialog api using langserve
+- `api` - the service to expose dialog api using langserve. When starting, this service first fires a `make-embeddings` service to resolve the indexing phase.
 
 Now, chat with dialog either:
 - using the playground (at http://0.0.0.0:8080/chat/playground/, which also shows intermediate steps of the chain)
