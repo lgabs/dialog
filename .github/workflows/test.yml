@@ -1,7 +1,9 @@
-name: test
+name: Build Test
 run-name: Build Test
 
-on: [push]
+on:
+  pull_request:
+    types: [opened, reopened]
 
 jobs:
   test:
@@ -10,4 +12,4 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Build test
-      run: docker compose --env-file ./.env.sample -f docker-compose.yml run --rm --build dialog 
+      run: docker build . -t dialog 
