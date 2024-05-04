@@ -32,9 +32,11 @@ With the chain created (or combination of chains), you can easly expose them as 
 
 ## Get Started
 
-To run it initially, download this [Question-Answer Dataset](https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download&select=S08_question_answer_pairs.txt) into `examples/qa_example.csv` path and run `python examples/make_qa_example.py` to build a simple knowledge base with question and answer together (the result will be embedded together). Notice that this file does a simple preprocessing and saves the csv to the `/data` folder. This is the default folder for the knowledge base. The default column to be embedded is called `Document`, all remaining columns will be added as metadata do the embedded document.
+To run it initially, use example files from `examples` folder: 
+- `examples/knowledge_base.csv`: a sample knowledge base from a [Kaggle dataset](https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download&select=S08_question_answer_pairs.txt) about Abraham Lincoln. The default column to be embedded is `Document`, all remaining columns will be added as metadata do the embedded document.
+- `examples/params`: toml files that stores chain parameters, like prompts and model's parameters, one file for each chain. These are used in runtime to compile the chains.
 
-Before starting the dockerized application, you'll need a `.env` for environment variables; use the [`.env.sample`](https://github.com/lgabs/dialog/blob/main/.env.sample) as an example. After that, run:
+Before starting the dockerized application, you'll need a `.env` for environment variables; use the [`.env.sample`](https://github.com/lgabs/dialog/blob/main/.env.sample) as an example. After that, run
 ```
 docker compose up
 ```
@@ -43,7 +45,9 @@ and you'll see two services running:
 - `db` - the service for the postgres container (the same database is used for memory and vector store)
 - `api` - the service to expose dialog api using langserve
 
-Now, chat with dialog using the playground (at http://0.0.0.0:8080/chat/playground/, which also shows intermediate steps of the chain) or access the api documentation at http://0.0.0.0:8080/docs, which includes all endpoints automatically created by langserve in the Swagger UI. 
+Now, chat with dialog either:
+- using the playground (at http://0.0.0.0:8080/chat/playground/, which also shows intermediate steps of the chain)
+- accessing the api documentation at http://0.0.0.0:8080/docs, which includes all endpoints automatically created by langserve in the Swagger UI. 
 
 The `src/dialog/app/server.py` defines the FastAPI API, and the langchain's `add_routes` exposes any chain under a specified `path`.By default, it exposes the `rag_with_history_chain`, which lives in `src/dialog/chains/rag_with_history`. All chains should be defined in the `src/dialog/chains` module, and you can serve as many as you want using add_routes with other paths.
 
