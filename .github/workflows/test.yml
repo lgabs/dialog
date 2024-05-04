@@ -10,4 +10,4 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Build test
-      run: docker compose -f docker-compose.yml run --rm --env-file ./.env.sample --build api 
+      run: docker compose --env-file ./.env.sample -f docker-compose.yml run --rm --build dialog 
