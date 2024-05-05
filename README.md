@@ -53,6 +53,9 @@ Now, chat with dialog either:
 
 The `src/dialog/app/server.py` defines the FastAPI API, and the langchain's `add_routes` exposes any chain under a specified `path`.By default, it exposes the `rag_with_history_chain`, which lives in `src/dialog/chains/rag_with_history`. All chains should be defined in the `src/dialog/chains` module, and you can serve as many as you want using add_routes with other paths.
 
+## Evaluate your Chains
+
+To learn more about evaluation of LLM applications, check [this post](https://medium.com/data-science-at-microsoft/evaluating-llm-systems-metrics-challenges-and-best-practices-664ac25be7e5). To evaluate your chain(s) with langsmith, you can create a dataset of input/output examples (check the `/examples/evals_example.jsonl` example) and upload it to langsmith (or create one there directly in the UI). Then, update the dataset name in your `.env`, and then run `make evals`, which will run the default default evaluation suite over your dataset and log the results in your datasets's experiments in langsmith UI. Since every application will have different evaluation suites, you can customize your `src/evals/evals.py` for that. Check more about langsmith evaluation [here](https://docs.smith.langchain.com/evaluation/quickstart).
 
 ## References
 ### Github project examples:
@@ -65,3 +68,5 @@ The `src/dialog/app/server.py` defines the FastAPI API, and the langchain's `add
   - Langchain's doc on [Q&A with RAG](https://python.langchain.com/docs/use_cases/question_answering/)
   - Langchain's [integrations for memory](https://python.langchain.com/docs/integrations/memory/) (postgres is [here](https://python.langchain.com/docs/integrations/memory/postgres_chat_message_history/))
   - Langchain's [integrations for vector stores](https://python.langchain.com/docs/integrations/vectorstores/) (pgvector is [here](https://python.langchain.com/docs/integrations/vectorstores/pgvector/))
+  - [LLM evaluation](https://medium.com/data-science-at-microsoft/evaluating-llm-systems-metrics-challenges-and-best-practices-664ac25be7e5)
+- [Langsmith evaluation suite](https://docs.smith.langchain.com/evaluation/quickstart)
