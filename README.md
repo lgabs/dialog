@@ -32,11 +32,13 @@ With the chain created (or combination of chains), you can easly expose them as 
 
 ## Get Started
 
-To run it initially, use example files from `examples` folder: 
+Before starting the dockerized application, you'll need a `.env` for environment variables; use the [`.env.sample`](https://github.com/lgabs/dialog/blob/main/.env.sample) as an example. It shows several variables and paths to the knowledge base and chain parameters. The `/data` folder is intentionally not versioned since they contain proprietary information.
+
+To run it initially, use example files from `examples` folder (copy them to `/data` as shown in the `.env.sample`): 
 - `examples/knowledge_base.csv`: a sample knowledge base from a [Kaggle dataset](https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download&select=S08_question_answer_pairs.txt) about Abraham Lincoln. The default column to be embedded is `Document`, all remaining columns will be added as metadata do the embedded document.
 - `examples/params`: toml files that stores chain parameters, like prompts and model's parameters, one file for each chain. These are used in runtime to compile the chains.
 
-Before starting the dockerized application, you'll need a `.env` for environment variables; use the [`.env.sample`](https://github.com/lgabs/dialog/blob/main/.env.sample) as an example. After that, run
+Then, run
 ```
 docker compose up
 ```

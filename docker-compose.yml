@@ -26,7 +26,7 @@ services:
       - .env
     volumes:
       - ./src:/app/src
-      - ./examples:/data
+      - ./data:/data
 
   dialog:
     build: .
@@ -39,4 +39,4 @@ services:
       - .env
     volumes:
       - ./src:/app/src
-      - ./examples:/data
+      - ./data:/data
