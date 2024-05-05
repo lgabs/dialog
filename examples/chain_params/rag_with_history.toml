@@ -10,6 +10,7 @@ answer_template = """Answer the question based only on the following context:
 {context}
 
 Question: {question}
+Answer:
 """
 
 [model_params]

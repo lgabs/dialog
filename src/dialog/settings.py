@@ -9,7 +9,7 @@ class Settings(BaseSettings):
 
 
 class ChainSettings(BaseSettings):
-    params_path: FilePath = Field(default="/data/params.toml")
+    params_path: FilePath = Field(default="/data/params/rag.toml")
     openai_api_key: SecretStr
 
     @computed_field
@@ -28,6 +28,7 @@ class VectordbSettings(BaseSettings):
     collection_name: str
     knowledge_base_path: FilePath = Field(default="./data/knowledge_base.csv")
     embedding_cols: str
+    rebuild_db: bool = Field(default=True)
 
 
 settings = Settings()
