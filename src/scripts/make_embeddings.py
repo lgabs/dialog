@@ -1,6 +1,6 @@
 #! /usr/bin/env python
+from typing import List
 import csv
-import re
 
 from langchain_community.document_loaders.csv_loader import CSVLoader
 from langchain_core.documents import Document
@@ -30,16 +30,14 @@ def make_embeddings(path: str):
     metadata_columns = [
         col for col in _get_csv_cols(path) if col not in embedding_columns
     ]
+    loader = CSVLoader(path, metadata_columns=metadata_columns)
+    docs: List[Document] = loader.load()
 
     logger.info("Metadata columns: %s", metadata_columns)
     logger.info("Embedding columns: %s", embedding_columns)
-
-    loader = CSVLoader(path, metadata_columns=metadata_columns)
-    docs = loader.load()
-
     logger.debug("Glimpse over the first doc: %s", docs[0].page_content[:100])
 
-    vectordb = get_vectorstore()
+    vectordb: VectorStore = get_vectorstore()
     vectordb.delete_collection()
     vectordb.create_collection()
     vectordb.add_documents(docs)
@@ -48,11 +46,14 @@ def make_embeddings(path: str):
 
 
 if __name__ == "__main__":
-    logger.debug("knowledge_base_path: %s", vectordb_settings.knowledge_base_path)
-    try:
-        make_embeddings(path=str(vectordb_settings.knowledge_base_path))
-    except Exception as e:
-        logger.error(e)
-        exit(-1)
+    if vectordb_settings.rebuild_db:
+        logger.debug("knowledge_base_path: %s", vectordb_settings.knowledge_base_path)
+        try:
+            make_embeddings(path=str(vectordb_settings.knowledge_base_path))
+        except Exception as e:
+            logger.error(e)
+            exit(-1)
+        else:
+            exit(0)
     else:
-        exit(0)
+        logger.info("vectordb_settings.rebuild_db set to False. Avoiding the vectordb rebuild.")
