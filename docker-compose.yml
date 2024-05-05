@@ -44,7 +44,7 @@ services:
 
   evals:
     build: .
-    command: /app/src/scripts/run_evals.sh
+    command: python /app/src/evals/evals.py
     depends_on:
       make-embeddings:
         condition: service_completed_successfully

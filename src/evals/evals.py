@@ -24,10 +24,9 @@ if __name__ == "__main__":
     client = Client()
     # Choose and LLM
     openai_client = wrap_openai(openai.Client())
-    # Choose evaluators
+    # Choose evaluators (correctness and context reference with chain of thought "reasoning")
     eval_config = RunEvalConfig(
-        # We will use the chain-of-thought Q&A correctness as an example evaluator
-        evaluators=["qa"],
+        evaluators=["qa", "cot_qa"],
     )
     results = client.run_on_dataset(
         dataset_name=DATASET_NAME, llm_or_chain_factory=chain, evaluation=eval_config

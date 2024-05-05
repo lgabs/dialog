@@ -35,7 +35,7 @@ def make_embeddings(path: str):
 
     logger.info("Metadata columns: %s", metadata_columns)
     logger.info("Embedding columns: %s", embedding_columns)
-    logger.debug("Glimpse over the first doc: %s", docs[0].page_content[:100])
+    logger.info("Glimpse over the first doc: %s", docs[0].page_content[:100])
 
     vectordb: VectorStore = get_vectorstore()
     vectordb.delete_collection()
@@ -47,7 +47,7 @@ def make_embeddings(path: str):
 
 if __name__ == "__main__":
     if vectordb_settings.rebuild_db:
-        logger.debug("knowledge_base_path: %s", vectordb_settings.knowledge_base_path)
+        logger.info("knowledge_base_path: %s", vectordb_settings.knowledge_base_path)
         try:
             make_embeddings(path=str(vectordb_settings.knowledge_base_path))
         except Exception as e:
