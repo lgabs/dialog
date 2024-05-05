@@ -1,4 +1,5 @@
 name: Evals
+run-name: run chain(s) evaluations
 
 on:
     workflow_dispatch:
