@@ -41,3 +41,17 @@ services:
     volumes:
       - ./src:/app/src
       - ./data:/data
+
+  evals:
+    build: .
+    command: /app/src/scripts/run_evals.sh
+    depends_on:
+      make-embeddings:
+        condition: service_completed_successfully
+    profiles:
+      - evals
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src
+      - ./data:/data
