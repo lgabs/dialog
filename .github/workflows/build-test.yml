@@ -1,9 +1,7 @@
 name: Build Test
 run-name: Build Test
 
-on:
-  push:
-  workflow_dispatch:
+on: [push]
 
 jobs:
   build-test:
