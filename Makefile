@@ -1,9 +1,3 @@
-build-api:
-	docker compose build api
-
-build-db:
-	docker compose build db
-
 db:
 	docker compose up db
 
