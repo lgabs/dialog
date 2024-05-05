@@ -5,7 +5,7 @@ from pydantic import PostgresDsn, FilePath, SecretStr, Field, computed_field
 
 class Settings(BaseSettings):
     environment: str
-    logging_level: str = Field(default="INFO")
+    log_level: str = Field(default="INFO")
 
 
 class ChainSettings(BaseSettings):

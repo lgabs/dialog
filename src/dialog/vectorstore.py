@@ -16,7 +16,7 @@ def combine_documents(
     return document_separator.join(doc_strings)
 
 
-def get_vectorstore():
+def get_vectorstore() -> PGVector:
     return PGVector(
         collection_name=vectordb_settings.collection_name,
         connection=str(vectordb_settings.vectordb_connection),
