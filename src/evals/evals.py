@@ -11,12 +11,11 @@ from langchain.smith import RunEvalConfig
 
 from dialog.chains.rag import rag_chain
 
-EVALS_PATH = os.environ["EVALS_PATH"]
 DATASET_NAME = os.environ["DATASET_NAME"]
 
 
 if __name__ == "__main__":
-    # Choose a chain (making some input/output change to match with private eval sample)
+    # Choose a chain (TODO: use 'question' for input key, this workaround is to test an existent dataset)
     chain = (
         {"question": itemgetter("user_message")}
         | rag_chain
