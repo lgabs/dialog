@@ -40,7 +40,7 @@ rag_chain = (
     (
         {
             "context": itemgetter("question") | retriever | combine_documents,
-            "question": RunnablePassthrough(),
+            "question": itemgetter("question"),
         }
         | ANSWER_PROMPT
         | llm

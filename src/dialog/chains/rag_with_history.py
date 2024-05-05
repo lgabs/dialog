@@ -64,7 +64,7 @@ retriever = get_retriever()
 _query_with_context = RunnableParallel(
     {
         "context": itemgetter("question") | retriever | combine_documents,
-        "question": lambda x: x["question"],
+        "question": itemgetter("question"),
     }
 )
 
