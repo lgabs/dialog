@@ -32,25 +32,32 @@ With the chain created (or combination of chains), you can easly expose them as 
 
 ## Get Started
 
-To run it initially, use example files from `examples` folder: 
-- `examples/knowledge_base.csv`: a sample knowledge base from a [Kaggle dataset](https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download&select=S08_question_answer_pairs.txt) about Abraham Lincoln. The default column to be embedded is `Document`, all remaining columns will be added as metadata do the embedded document.
-- `examples/params`: toml files that stores chain parameters, like prompts and model's parameters, one file for each chain. These are used in runtime to compile the chains.
+Before starting the dockerized application, you'll need a `.env` for environment variables; use the [`.env.sample`](https://github.com/lgabs/dialog/blob/main/.env.sample) as an example. It shows several variables and paths to the knowledge base and chain parameters (which are sentitive info). 
 
-Before starting the dockerized application, you'll need a `.env` for environment variables; use the [`.env.sample`](https://github.com/lgabs/dialog/blob/main/.env.sample) as an example. After that, run
+As a initial example, there are examples files at `/examples`, which are mapped to container's `/data` folder by default: 
+- `examples/knowledge_base.csv`: a sample knowledge base from a [Kaggle dataset](https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download&select=S08_question_answer_pairs.txt) about Abraham Lincoln. The default column to be embedded is `Document`, all remaining columns will be added as metadata do the embedded document.
+- `examples/chain_params`: toml files that stores chain parameters, like prompts and model's parameters, one file for each chain. These are used in runtime to compile the chains.
+
+After setting your `.env`, run
 ```
 docker compose up
 ```
 
 and you'll see two services running:
 - `db` - the service for the postgres container (the same database is used for memory and vector store)
-- `api` - the service to expose dialog api using langserve. When starting, this service first fires a `make-embeddings` service to resolve the indexing phase.
+- `dialog` - the service to expose dialog api using langserve. When starting, this service first fires a `make-embeddings` service to resolve the indexing phase.
 
 Now, chat with dialog either:
 - using the playground (at http://0.0.0.0:8080/chat/playground/, which also shows intermediate steps of the chain)
 - accessing the api documentation at http://0.0.0.0:8080/docs, which includes all endpoints automatically created by langserve in the Swagger UI. 
 
+You can customize your your knowledge base and chain parameters updating your `/data` folder with your files and the `docker-compose.yml` volumes to map from `./examples/data:/data` to `- ./data:/data`.
+
 The `src/dialog/app/server.py` defines the FastAPI API, and the langchain's `add_routes` exposes any chain under a specified `path`.By default, it exposes the `rag_with_history_chain`, which lives in `src/dialog/chains/rag_with_history`. All chains should be defined in the `src/dialog/chains` module, and you can serve as many as you want using add_routes with other paths.
 
+## Evaluate your Chains
+
+To learn more about evaluation of LLM applications, check [this post](https://medium.com/data-science-at-microsoft/evaluating-llm-systems-metrics-challenges-and-best-practices-664ac25be7e5). To evaluate your chain(s) with langsmith, you can create a dataset of input/output examples (check the `/examples/evals_example.jsonl`) and upload it to langsmith (or create one there directly in the UI). Then, update the dataset name in your `.env`, and then run `make evals`, which will run the default evaluation suite for `correctness` metric over your dataset (with the `dialog` image) and log the results in your datasets's experiments in langsmith UI. Since every application will have different evaluation suites, you can customize your `src/evals/evals.py` for that. Check more about langsmith evaluation [here](https://docs.smith.langchain.com/evaluation/quickstart).
 
 ## References
 ### Github project examples:
@@ -63,3 +70,5 @@ The `src/dialog/app/server.py` defines the FastAPI API, and the langchain's `add
   - Langchain's doc on [Q&A with RAG](https://python.langchain.com/docs/use_cases/question_answering/)
   - Langchain's [integrations for memory](https://python.langchain.com/docs/integrations/memory/) (postgres is [here](https://python.langchain.com/docs/integrations/memory/postgres_chat_message_history/))
   - Langchain's [integrations for vector stores](https://python.langchain.com/docs/integrations/vectorstores/) (pgvector is [here](https://python.langchain.com/docs/integrations/vectorstores/pgvector/))
+  - [LLM evaluation](https://medium.com/data-science-at-microsoft/evaluating-llm-systems-metrics-challenges-and-best-practices-664ac25be7e5)
+- [Langsmith evaluation suite](https://docs.smith.langchain.com/evaluation/quickstart)

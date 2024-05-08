@@ -1,0 +1,16 @@
+name: Evals
+run-name: run chain(s) evaluations
+
+on:
+    workflow_dispatch:
+
+jobs:
+  run-evaluations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run Evals
+        run: |
+            docker compose --profile evals up evals
+            docker compose down

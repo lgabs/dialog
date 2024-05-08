@@ -26,10 +26,11 @@ services:
       - .env
     volumes:
       - ./src:/app/src
-      - ./examples:/data
+      - ./examples/data:/data
 
   dialog:
     build: .
+    image: dialog
     ports:
       - '8080:8080'
     depends_on:
@@ -39,4 +40,18 @@ services:
       - .env
     volumes:
       - ./src:/app/src
-      - ./examples:/data
+      - ./examples/data:/data
+
+  evals:
+    build: .
+    command: python /app/src/evals/evals.py
+    depends_on:
+      make-embeddings:
+        condition: service_completed_successfully
+    profiles:
+      - evals
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src
+      - ./examples/data:/data

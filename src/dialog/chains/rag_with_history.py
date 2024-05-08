@@ -27,8 +27,8 @@ prompts = chain_settings.chain_params.get("prompts")
 STANDALONE_QUESTION_TEMPLATE = prompts.get("standalone_question_template")
 STANDALONE_QUESTION_PROMPT = PromptTemplate.from_template(STANDALONE_QUESTION_TEMPLATE)
 
-FINAL_ANSWER_TEMPLATE = prompts.get("final_answer_template")
-FINAL_ANSWER_PROMPT = ChatPromptTemplate.from_template(FINAL_ANSWER_TEMPLATE)
+ANSWER_TEMPLATE = prompts.get("answer_template")
+ANSWER_PROMPT = ChatPromptTemplate.from_template(ANSWER_TEMPLATE)
 
 # Standalone Question
 
@@ -64,7 +64,7 @@ retriever = get_retriever()
 _query_with_context = RunnableParallel(
     {
         "context": itemgetter("question") | retriever | combine_documents,
-        "question": lambda x: x["question"],
+        "question": itemgetter("question"),
     }
 )
 
@@ -72,7 +72,7 @@ _query_with_context = RunnableParallel(
 conversational_qa_chain = (
     _standalone_question.with_config({"run_name": "StandaloneQuestion"})
     | _query_with_context.with_config({"run_name": "QuestionWithContext"})
-    | FINAL_ANSWER_PROMPT.with_config({"run_name": "FinalAnswerPrompt"})
+    | ANSWER_PROMPT.with_config({"run_name": "FinalAnswerPrompt"})
     | llm
     | StrOutputParser()
 )
