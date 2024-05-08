@@ -32,13 +32,13 @@ With the chain created (or combination of chains), you can easly expose them as 
 
 ## Get Started
 
-Before starting the dockerized application, you'll need a `.env` for environment variables; use the [`.env.sample`](https://github.com/lgabs/dialog/blob/main/.env.sample) as an example. It shows several variables and paths to the knowledge base and chain parameters. The `/data` folder is intentionally not versioned since they contain proprietary information.
+Before starting the dockerized application, you'll need a `.env` for environment variables; use the [`.env.sample`](https://github.com/lgabs/dialog/blob/main/.env.sample) as an example. It shows several variables and paths to the knowledge base and chain parameters (which are sentitive info). 
 
-To run it initially, use example files from `examples` folder (copy them to `/data` as shown in the `.env.sample`): 
+As a initial example, there are examples files at `/examples`, which are mapped to container's `/data` folder by default: 
 - `examples/knowledge_base.csv`: a sample knowledge base from a [Kaggle dataset](https://www.kaggle.com/datasets/rtatman/questionanswer-dataset?resource=download&select=S08_question_answer_pairs.txt) about Abraham Lincoln. The default column to be embedded is `Document`, all remaining columns will be added as metadata do the embedded document.
-- `examples/params`: toml files that stores chain parameters, like prompts and model's parameters, one file for each chain. These are used in runtime to compile the chains.
+- `examples/chain_params`: toml files that stores chain parameters, like prompts and model's parameters, one file for each chain. These are used in runtime to compile the chains.
 
-Then, run
+After setting your `.env`, run
 ```
 docker compose up
 ```
@@ -50,6 +50,8 @@ and you'll see two services running:
 Now, chat with dialog either:
 - using the playground (at http://0.0.0.0:8080/chat/playground/, which also shows intermediate steps of the chain)
 - accessing the api documentation at http://0.0.0.0:8080/docs, which includes all endpoints automatically created by langserve in the Swagger UI. 
+
+You can customize your your knowledge base and chain parameters updating your `/data` folder with your files and the `docker-compose.yml` volumes to mapping from `./examples/data:/data` to `- ./data:/data`.
 
 The `src/dialog/app/server.py` defines the FastAPI API, and the langchain's `add_routes` exposes any chain under a specified `path`.By default, it exposes the `rag_with_history_chain`, which lives in `src/dialog/chains/rag_with_history`. All chains should be defined in the `src/dialog/chains` module, and you can serve as many as you want using add_routes with other paths.
 
