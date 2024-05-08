@@ -51,7 +51,7 @@ Now, chat with dialog either:
 - using the playground (at http://0.0.0.0:8080/chat/playground/, which also shows intermediate steps of the chain)
 - accessing the api documentation at http://0.0.0.0:8080/docs, which includes all endpoints automatically created by langserve in the Swagger UI. 
 
-You can customize your your knowledge base and chain parameters updating your `/data` folder with your files and the `docker-compose.yml` volumes to mapping from `./examples/data:/data` to `- ./data:/data`.
+You can customize your your knowledge base and chain parameters updating your `/data` folder with your files and the `docker-compose.yml` volumes to maping from `./examples/data:/data` to `- ./data:/data`.
 
 The `src/dialog/app/server.py` defines the FastAPI API, and the langchain's `add_routes` exposes any chain under a specified `path`.By default, it exposes the `rag_with_history_chain`, which lives in `src/dialog/chains/rag_with_history`. All chains should be defined in the `src/dialog/chains` module, and you can serve as many as you want using add_routes with other paths.
 
