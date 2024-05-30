@@ -61,14 +61,13 @@ To learn more about evaluation of LLM applications, check [this post](https://me
 
 ## References
 ### Github project examples:
-  - [LangChain Template - RAG Conversation](https://github.com/langchain-ai/langchain/tree/master/templates/rag-conversation)
+  - [LangChain Template - RAG Conversation](https://python.langchain.com/v0.2/docs/tutorials/rag/)
   - [Langchain Template - Chat with Persistence](https://github.com/langchain-ai/langserve/blob/main/examples/chat_with_persistence/server.py)
   - [Langchain Conversation with Retrieval Chain](https://github.com/langchain-ai/langserve/blob/main/examples/conversational_retrieval_chain/server.py)
-  - [langchain-cli](https://github.com/langchain-ai/langchain/blob/master/libs/cli/DOCS.md)
   - [langserve-launch-example](https://github.com/langchain-ai/langserve-launch-example)
 ### Documentations and blogposts:
   - Langchain's doc on [Q&A with RAG](https://python.langchain.com/docs/use_cases/question_answering/)
-  - Langchain's [integrations for memory](https://python.langchain.com/docs/integrations/memory/) (postgres is [here](https://python.langchain.com/docs/integrations/memory/postgres_chat_message_history/))
-  - Langchain's [integrations for vector stores](https://python.langchain.com/docs/integrations/vectorstores/) (pgvector is [here](https://python.langchain.com/docs/integrations/vectorstores/pgvector/))
+  - Langchain's [integrations for memory](https://python.langchain.com/v0.2/docs/integrations/memory/) (postgres is [here](https://python.langchain.com/v0.2/docs/integrations/memory/postgres_chat_message_history/))
+  - Langchain's [integrations for vector stores](https://python.langchain.com/v0.2/docs/integrations/vectorstores/) (pgvector is [here](https://python.langchain.com/v0.2/docs/integrations/vectorstores/pgvector/))
   - [LLM evaluation](https://medium.com/data-science-at-microsoft/evaluating-llm-systems-metrics-challenges-and-best-practices-664ac25be7e5)
 - [Langsmith evaluation suite](https://docs.smith.langchain.com/evaluation/quickstart)
